@@ -28,14 +28,17 @@ t_train = tf.cast(t_train, dtype=tf.float32)
 
 train_db = tf.data.Dataset.from_tensor_slices((x_train, t_train)).batch(30)
 
-# 生成神经网络参数, 结构, n * 2, 2 * 11, 11 * 1, 1
-w1 = tf.Variable(tf.random.normal([2,11], dtype=tf.float32))
-b1 = tf.Variable(tf.constant(0.01, shape=[1,11]))
+# 隐层神经元个数
+hidden_size = 15
 
-w2 = tf.Variable(tf.random.normal([11,1], dtype=tf.float32))
+# 生成神经网络参数, 结构, n * 2, 2 * 11, 11 * 1, 1
+w1 = tf.Variable(tf.random.normal([2,hidden_size], dtype=tf.float32))
+b1 = tf.Variable(tf.constant(0.01, shape=[1,hidden_size]))
+
+w2 = tf.Variable(tf.random.normal([hidden_size,1], dtype=tf.float32))
 b2 = tf.Variable(tf.constant(0.01, shape=[1,1]))
 
-lr = 0.005
+lr = 0.01
 epoch = 500
 
 # 训练
@@ -46,7 +49,17 @@ for epoch in range(epoch):
             r1 = tf.nn.relu(h1)
             y = tf.matmul(r1, w2) + b2
             #y = tf.nn.softmax(h2)
-            loss = tf.reduce_mean(tf.square(t_trian-y))
+            loss_mse = tf.reduce_mean(tf.square(t_trian-y))
+
+            '''正则化惩罚 -- l2'''
+            λ = 0.03
+            loss_regularization = []
+            loss_regularization.append(tf.nn.l2_loss(w1))
+            loss_regularization.append(tf.nn.l2_loss(w2))
+            # 求和
+            loss_regularization = tf.reduce_sum(loss_regularization)
+            loss = loss_mse + λ * loss_regularization
+            '''正则化惩罚 -- l2'''
 
         vars = [w1, b1, w2, b2]
         grads = tape.gradient(loss, vars)
@@ -77,8 +90,13 @@ for x_test in grid:
 # 描数据点
 x1 = x_data[:,0]
 x2 = x_data[:,1]
-
 plt.scatter(x1, x2, color=np.squeeze(Y_c))
+
+# 将预测结构组成与xx形状一样, 保证一一对应
+probs = np.array(probs).reshape(xx.shape)
+# 画分界线点并连线
+# 把坐标xx yy和对应的值probs放入contour函数，给probs值为0.5的所有点上色  plt.show()后 显示的是红蓝点的分界线
+plt.contour(xx, yy, probs, levels=[0.5])
 
 plt.show()
 

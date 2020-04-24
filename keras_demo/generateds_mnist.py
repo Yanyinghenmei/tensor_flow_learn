@@ -6,17 +6,15 @@ import os
 from PIL import Image
 import numpy as np
 
-os.getcwd()
+train_path = './my_data/mnist_image_label/train_png_60000/'
+train_txt = './my_data/mnist_image_label/train_png_60000.txt'
+x_train_savepath = './my_data/mnist_image_label/mnist_x_train.npy'
+y_train_savepath = './my_data/mnist_image_label/mnist_y_train.npy'
 
-train_path = '../keras_learn01/my_data/mnist_image_label/train_png_60000/'
-train_txt = '../keras_learn01/my_data/mnist_image_label/train_png_60000.txt'
-x_train_savepath = '../keras_learn01/my_data/mnist_image_label/mnist_x_train.npy'
-y_train_savepath = '../keras_learn01/my_data/mnist_image_label/mnist_y_train.npy'
-
-test_path = '../keras_learn01/my_data/mnist_image_label/test_png_60000/'
-test_txt = '../keras_learn01/my_data/mnist_image_label/test_png_60000.txt'
-x_test_savepath = '../keras_learn01/my_data/mnist_image_label/mnist_x_test.npy'
-y_test_savepath = '../keras_learn01/my_data/mnist_image_label/mnist_y_test.npy'
+test_path = './my_data/mnist_image_label/test_png_60000/'
+test_txt = '../my_data/mnist_image_label/test_png_60000.txt'
+x_test_savepath = './my_data/mnist_image_label/mnist_x_test.npy'
+y_test_savepath = './my_data/mnist_image_label/mnist_y_test.npy'
 
 
 def generateds(path, txt):
@@ -66,8 +64,8 @@ def load_mnist():
 
 
 '''test'''
-# (x_train, y_train), (x_test, y_test) =  load_mnist()
-# print(x_train.shape)
-# print(y_train.shape)
-# print(x_test.shape)
-# print(y_test.shape)
+(x_train, y_train), (x_test, y_test) =  load_mnist()
+print(x_train.shape)
+print(y_train.shape)
+print(x_test.shape)
+print(y_test.shape)

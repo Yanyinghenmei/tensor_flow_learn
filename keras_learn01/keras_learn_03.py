@@ -7,7 +7,7 @@ import os, sys
 sys.path.append(os.pardir)
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
-import keras_learn01.dataset.mnist as mnist
+from dataset import mnist
 
 (x_train, t_train), (x_test,t_test) = mnist.load_mnist(flatten=False,normalize=False)
 
